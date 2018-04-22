@@ -19,7 +19,7 @@
 #define N   10
 
 __global__ void add( int *a, int *b, int *c ) {
-    int tid = blockIdx.x;    // this thread handles the data at its thread id
+    int tid = threadIdx.x;    // this thread handles the data at its thread id
     if (tid < N)
         c[tid] = a[tid] + b[tid];
 }
@@ -45,7 +45,7 @@ int main( void ) {
     HANDLE_ERROR( cudaMemcpy( dev_b, b, N * sizeof(int),
                               cudaMemcpyHostToDevice ) );
 
-    add<<<N,1>>>( dev_a, dev_b, dev_c );
+    add<<<1,N>>>( dev_a, dev_b, dev_c );
 
     // copy the array 'c' back from the GPU to the CPU
     HANDLE_ERROR( cudaMemcpy( c, dev_c, N * sizeof(int),
