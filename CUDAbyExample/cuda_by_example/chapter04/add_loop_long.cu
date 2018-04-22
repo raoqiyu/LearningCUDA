@@ -19,10 +19,9 @@
 #define N   (32 * 1024)
 
 __global__ void add( int *a, int *b, int *c ) {
-    int tid = blockIdx.x;
-    while (tid < N) {
+    int tid = blockIdx.x*blockDim.x + threadIdx.x;
+    if (tid < N) {
         c[tid] = a[tid] + b[tid];
-        tid += gridDim.x;
     }
 }
 
@@ -51,8 +50,9 @@ int main( void ) {
                               cudaMemcpyHostToDevice ) );
     HANDLE_ERROR( cudaMemcpy( dev_b, b, N * sizeof(int),
                               cudaMemcpyHostToDevice ) );
-
-    add<<<128,1>>>( dev_a, dev_b, dev_c );
+	int threadsPerBlock = 1024;
+	int numBlocks = (N-1)/threadsPerBlock + 1;
+    add<<<numBlocks,threadsPerBlock>>>( dev_a, dev_b, dev_c );
 
     // copy the array 'c' back from the GPU to the CPU
     HANDLE_ERROR( cudaMemcpy( c, dev_c, N * sizeof(int),
