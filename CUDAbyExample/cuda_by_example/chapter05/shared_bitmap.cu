@@ -18,7 +18,7 @@
 #include "../common/book.h"
 #include "../common/cpu_bitmap.h"
 
-#define DIM 1024
+#define DIM 512
 #define PI 3.1415926535897932f
 
 __global__ void kernel( unsigned char *ptr ) {
