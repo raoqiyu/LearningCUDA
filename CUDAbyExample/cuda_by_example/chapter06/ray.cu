@@ -89,7 +89,7 @@ int main( void ) {
     // allocate memory on the GPU for the output bitmap
     HANDLE_ERROR( cudaMalloc( (void**)&dev_bitmap,
                               bitmap.image_size() ) );
-
+    data.dev_bitmap = dev_bitmap;
     // allocate temp memory, initialize it, copy to constant
     // memory on the GPU, then free our temp memory
     Sphere *temp_s = (Sphere*)malloc( sizeof(Sphere) * SPHERES );
