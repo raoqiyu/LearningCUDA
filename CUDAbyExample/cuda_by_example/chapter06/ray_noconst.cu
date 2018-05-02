@@ -18,7 +18,7 @@
 #include "../common/book.h"
 #include "../common/cpu_bitmap.h"
 
-#define DIM 1024
+#define DIM 512
 
 #define rnd( x ) (x * rand() / RAND_MAX)
 #define INF     2e10f
@@ -92,6 +92,7 @@ int main( void ) {
     // allocate memory on the GPU for the output bitmap
     HANDLE_ERROR( cudaMalloc( (void**)&dev_bitmap,
                               bitmap.image_size() ) );
+	data.dev_bitmap = dev_bitmap;
     // allocate memory for the Sphere dataset
     HANDLE_ERROR( cudaMalloc( (void**)&s,
                               sizeof(Sphere) * SPHERES ) );
